@@ -1,0 +1,27 @@
+{
+  "name": "html-webpack-plugin-assets-fix",
+  "version": "1.0.0",
+  "description": "fix assets(js/css) path in html files while building multiple entry files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lkiarest/html-webpack-plugin-assets-fix.git"
+  },
+  "keywords": [
+    "html-webpack-plugin",
+    "html-webpack-plugin-assets-fix",
+    "multiple",
+    "multiple entries",
+    "assets",
+    "assets path"
+  ],
+  "author": "lkiarest",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lkiarest/html-webpack-plugin-assets-fix/issues"
+  },
+  "homepage": "https://github.com/lkiarest/html-webpack-plugin-assets-fix#readme"
+}
