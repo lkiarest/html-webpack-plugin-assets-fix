@@ -8,26 +8,49 @@ function HtmlWebpackPluginAssetsFix(options) {
     this.fixAssets = options.fixAssets
 }
 
-function fixPath(assertPath, htmlPath) {
-    if (!assertPath || !htmlPath) {
-        return assertPath
+const TRIM_ARGS = [/^\.\//, /^\s*/, /\s*$/, /\/$/]
+
+// clear path
+function trim(path) {
+    return TRIM_ARGS.reduce((ret, arg) => {
+        ret = ret.replace(arg, '')
+        return ret
+    }, path)
+}
+
+function fixPath(assetPath, htmlPath) {
+    assetPath = trim(assetPath)
+    htmlPath = trim(htmlPath)
+
+    if (assetPath.charAt(0) === '/') {
+        assetPath = assetPath.substring(1)
     }
 
-    let segments = htmlPath.split('/')
-    do {
-        if (segments.length === 0) {
-            break
-        }
+    let assetSegs = assetPath.split('/')
+    const htmlSegs = htmlPath.split('/')
 
-        let seg = segments.shift() + '/'
-        if (assertPath.indexOf(seg ) === 0) {
-            assertPath = assertPath.replace(seg, '')
+    let dupNum = 0
+    for (let i = 0, len = htmlSegs.length; i < len; i++) {
+        if (htmlSegs[i] === assetSegs[i]) {
+            ++dupNum
         } else {
             break
         }
-    } while (true)
+    }
 
-    return assertPath
+    if (dupNum) {
+        htmlSegs.splice(0, dupNum)
+        assetSegs.splice(0, dupNum)
+    }
+
+    const htmlSize = htmlSegs.length
+    if (htmlSize > 1) {
+        const lpad = new Array(htmlSize - 1)
+        lpad.fill('..')
+        assetSegs = [...lpad, ...assetSegs]
+    }
+
+    return assetSegs.join('/')
 }
 
 HtmlWebpackPluginAssetsFix.prototype.apply = function(compiler) {

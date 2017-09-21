@@ -1,5 +1,7 @@
 # html-webpack-plugin-assets-fix
-fix assets(js/css) path in html files while building multiple entry files
+Fix html-webpack-plugin [Issue](https://github.com/jantimon/html-webpack-plugin/issues/665) that the relative assets(js/css) paths are incorrect while building multiple entries. 
+
+__Before importing this plugin for sub directory resolve, please try to modify your publicPath to be relative such as '../' and check it at first.__
 
 ### What's it
 When you wanna generate multiple entry html files via webpack and release target files within different sub directories, generally you'll config as below:
