@@ -1,6 +1,6 @@
 {
   "name": "html-webpack-plugin-assets-fix",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "fix assets(js/css) path in html files while building multiple entry files",
   "main": "index.js",
   "scripts": {
