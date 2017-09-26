@@ -22,6 +22,11 @@ function fixPath(assetPath, htmlPath) {
     assetPath = trim(assetPath)
     htmlPath = trim(htmlPath)
 
+    //if asset is from cdn, ignore it
+    if (assetPath.startsWith('//')) {
+        return assetPath
+    }
+
     if (assetPath.charAt(0) === '/') {
         assetPath = assetPath.substring(1)
     }
