@@ -62,24 +62,29 @@ HtmlWebpackPluginAssetsFix.prototype.apply = function(compiler) {
     const self = this
 
     compiler.plugin('compilation', function(compilation) {
-        compilation.plugin('html-webpack-plugin-before-html-processing', function(htmlPluginData, callback) {
-            if (!self.fixAssets) {
+        compilation.plugin('html-webpack-plugin-before-html-processing', function(htmlPluginData, possiblyCallback) {
+            const promise = new Promise((resolve, reject) => {
+                const callback = possiblyCallback || ((err, res) => err ? reject(err) : resolve(res));
+                if (!self.fixAssets) {
+                    callback(null, htmlPluginData)
+                    return;
+                }
+
+                const outputName = htmlPluginData.outputName
+                const assets = htmlPluginData.assets
+                const publicPath = assets.publicPath
+
+                assets.js = assets.js.map(assetfile => {
+                    return fixPath(assetfile.replace(publicPath, ''), outputName)
+                })
+
+                assets.css = assets.css.map(assetfile => {
+                    return fixPath(assetfile.replace(publicPath, ''), outputName)
+                })
+
                 callback(null, htmlPluginData)
-            }
-
-            const outputName = htmlPluginData.outputName
-            const assets = htmlPluginData.assets
-            const publicPath = assets.publicPath
-
-            assets.js = assets.js.map(assetfile => {
-                return fixPath(assetfile.replace(publicPath, ''), outputName)
-            })
-
-            assets.css = assets.css.map(assetfile => {
-                return fixPath(assetfile.replace(publicPath, ''), outputName)
-            })
-
-            callback(null, htmlPluginData)
+            });
+            return possiblyCallback ? undefined : promise;
         })
     })
 }
